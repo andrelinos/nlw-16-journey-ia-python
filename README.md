@@ -1,6 +1,5 @@
 <img src=".github/image.png" alt="NLW-16 - Journey - IA" />
 
-```markdown
 # Travel Agent Chatbot
 
 Este projeto é um chatbot desenvolvido para uma agência de viagens, capaz de gerar roteiros de viagem detalhados e personalizados. Utiliza várias bibliotecas de IA para pesquisa na web, carregamento de documentos e recuperação de informações relevantes.
@@ -20,24 +19,28 @@ Este projeto é um chatbot desenvolvido para uma agência de viagens, capaz de g
 ## Instalação
 
 1. Clone o repositório:
+
     ```sh
     git clone https://github.com/seu-usuario/travel-agent-chatbot.git
     cd travel-agent-chatbot
     ```
 
 2. Crie e ative um ambiente virtual:
+
     ```sh
     python3 -m venv venv
     source venv/bin/activate
     ```
 
 3. Instale as dependências:
+
     ```sh
     pip install --upgrade pip
     pip install -r requirements.txt
     ```
 
 4. Configure as variáveis de ambiente no arquivo `.env`:
+
     ```plaintext
     OPENAI_API_KEY=your_openai_api_key
     USER_AGENT=your_user_agent
