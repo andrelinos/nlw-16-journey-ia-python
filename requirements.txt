@@ -1,0 +1,10 @@
+bs4
+langchain
+langchain-core
+langchain-openai
+langchain-community
+langchain-text-splitters
+wikipedia
+duckduckgo-search
+chromadb
+python-dotenv

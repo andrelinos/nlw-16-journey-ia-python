@@ -1,3 +1,4 @@
+import json
 import os
 from dotenv import load_dotenv
 from langchain import hub
@@ -17,13 +18,16 @@ load_dotenv()
 api_key = os.getenv('OPENAI_API_KEY')
 user_agent = os.getenv('USER_AGENT')
 
+# Showed in the final class this option to use in AWS
+# OPENAI_API_KEY os.environ['OPENAI_API_KEY']
+
 os.environ['USER_AGENT'] = user_agent
 
 llm = ChatOpenAI(model="gpt-3.5-turbo")
 
-query = """
-Vou viajar para Londres em agosto de 2024. Quero que faça um roteiro de viagem para mim com os eventos que irão ocorrer na data da viagem e com o preço da passagem de São Paulo para Londres.
-"""
+# query = """
+# Vou viajar para Londres em agosto de 2024. Quero que faça um roteiro de viagem para mim com os eventos que irão ocorrer na data da viagem e com o preço da passagem de São Paulo para Londres.
+# """
 
 
 def researchAgent(query, llm):
@@ -31,7 +35,7 @@ def researchAgent(query, llm):
     prompt = hub.pull('hwchase17/react')
     agent = create_react_agent(llm, tools, prompt)
     agent_executor = AgentExecutor(
-        agent=agent, tools=tools, prompt=prompt, verbose=True)
+        agent=agent, tools=tools, prompt=prompt)
     webContext = agent_executor.invoke({"input": query})
     return webContext['output']
 
@@ -59,7 +63,7 @@ def loadData():
 def getRelevantDocs(query):
     retriever = loadData()
     relevant_documents = retriever.invoke(query)
-    print(relevant_documents)
+    # print(relevant_documents)
     return relevant_documents
 
 
@@ -91,4 +95,20 @@ def getResponse(query, llm):
     return response
 
 
-print(getResponse(query, llm).content)
+# print(getResponse(query, llm).content)
+
+def lambda_handler(event, context):
+    # query = event.get("question")
+    body = json.loads(event.get('body', {}))
+    query = body.get('question', 'Parametro question não fornecido')
+    response = getResponse(query, llm).content
+    return {
+        "statusCode": 200,
+        "headers": {
+            "Content-Type": "application/json"
+        },
+        "body": json.dumps({
+            "message": "Tarefa concluída com sucesso",
+            "details": response
+        }),
+    }
